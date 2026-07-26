@@ -2,6 +2,9 @@ const express = require("express");
 
 const app = express();
 
+const userRoutes = require("./routes/userRoutes");
+const searchRoutes = require("./routes/searchRoutes");
+
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -9,31 +12,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/user", (req, res) => {
-  const { name, age } = req.query;
-  res.send(`name: ${name},age:${age}`);
-});
+app.use("/user", userRoutes);
 
-app.post("/user", (req, res) => {
-  const { name, age } = req.body;
-
-  console.log(req.body);
-
-  res.send(`Welcome ${name}. Age is ${age}`);
-});
-
-app.get("/about", (req, res) => {
-  res.send("about page");
-});
-
-app.get("/contact", (req, res) => {
-  res.send("contact page");
-});
-
-app.get("/search", (req, res) => {
-  const { keyword, page } = req.query;
-  res.send(`keyword: ${keyword}, page: ${page}`);
-});
+app.use("/search", searchRoutes);
 
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
